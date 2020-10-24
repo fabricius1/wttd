@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config     # adicionado
+from decouple import config, Csv     # adicionado
 from dj_database_url import parse as dburl  # adicionado
 import os                      # adicionado
 
@@ -28,8 +28,7 @@ SECRET_KEY = config('SECRET_KEY')  # alterada
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)            # alterada
 
-ALLOWED_HOSTS = ['*'] # alterada
-
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())  # alterada
 
 # Application definition
 
