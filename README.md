@@ -12,11 +12,11 @@ Sistema de eventos encomendado pela cliente.
 6. Execute os testes.
 
 ```console
-git clone git@github.com:henriquebastos/eventex.git wttd
+git clone git@github.com:fabricius1/wttd.git wttd
 cd wttd
 python -m venv .myvenv
 source .myenv/bin/activate  # para usuários de Linux/Mac
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 cp contrib/env-sample .env
 python manage.py test
 ```
