@@ -1,8 +1,7 @@
-from django.contrib import messages
 from django.shortcuts import render
 from eventex.subscriptions.forms import SubscriptionForm
 from django.template.loader import render_to_string
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.core import mail
 from django.conf import settings
 from eventex.subscriptions.models import Subscription
@@ -19,17 +18,16 @@ def create(request):
     
     if not form.is_valid():
         return render(request, 'subscriptions/subscription_form.html', {'form': form })
-    
+
+    subscription = Subscription.objects.create(**form.cleaned_data)
+
     _send_mail('Confirmação de inscrição',
                settings.DEFAULT_FROM_EMAIL,
+               subscription.email,
                'subscriptions/subscription_email.txt',
-               form.cleaned_data)
+               {'subscription': subscription})
 
-    Subscription.objects.create(**form.cleaned_data)
-
-    messages.success(request, 'Inscrição realizada com sucesso!')
-
-    return HttpResponseRedirect('/inscricao/')
+    return HttpResponseRedirect(f'/inscricao/{subscription.pk}/')
     
 
 def new(request):
@@ -38,6 +36,16 @@ def new(request):
                  {'form': SubscriptionForm()})
 
 
-def _send_mail(subject, email_from, template_name, context):
+def detail(request, pk):
+    try:
+        subscription = Subscription.objects.get(pk=pk)
+    except Subscription.DoesNotExist:
+        raise Http404
+    return render(request,
+                  'subscriptions/subscription_detail.html',
+                  {'subscription': subscription})
+
+
+def _send_mail(subject, email_from, email_to, template_name, context):
     body = render_to_string(template_name, context)
-    mail.send_mail(subject, body, email_from, [email_from, context['email']])
+    mail.send_mail(subject, body, email_from, [email_from, email_to])
