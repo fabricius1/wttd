@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url as r
 from eventex.subscriptions.forms import SubscriptionForm
 from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect, Http404
@@ -7,17 +7,23 @@ from django.conf import settings
 from eventex.subscriptions.models import Subscription
 
 
-def subscribe(request):
+def new(request):
     if request.method == 'POST':
         return create(request)
-    else:
-        return new(request)
+    return empty_form(request)
+
+
+def empty_form(request):
+    return render(request,
+                  'subscriptions/subscription_form.html',
+                  {'form': SubscriptionForm()})
+
 
 def create(request):
     form = SubscriptionForm(request.POST)
-    
+
     if not form.is_valid():
-        return render(request, 'subscriptions/subscription_form.html', {'form': form })
+        return render(request, 'subscriptions/subscription_form.html', {'form': form})
 
     subscription = Subscription.objects.create(**form.cleaned_data)
 
@@ -27,13 +33,7 @@ def create(request):
                'subscriptions/subscription_email.txt',
                {'subscription': subscription})
 
-    return HttpResponseRedirect(f'/inscricao/{subscription.pk}/')
-    
-
-def new(request):
-    return render(request,
-                 'subscriptions/subscription_form.html', 
-                 {'form': SubscriptionForm()})
+    return HttpResponseRedirect(r('subscriptions:detail', subscription.pk))
 
 
 def detail(request, pk):
