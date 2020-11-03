@@ -7,12 +7,13 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
     list_display = ('name',
                     'email',
                     'phone',
-                    'cpf', 
+                    'cpf',
                     'created_at',
+                    'paid',
                     'subscribed_today')
     date_hierarchy = 'created_at'
-    search_fields = ('name', 'email', 'phone', 'cpf', 'created_at')       
-    list_filter = ('created_at',)
+    search_fields = ('name', 'email', 'phone', 'cpf', 'created_at')
+    list_filter = ('paid', 'created_at',)
 
     def subscribed_today(self, obj):
         return obj.created_at == now().date()

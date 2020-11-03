@@ -10,9 +10,10 @@ class SubscriptionModelTest(TestCase):
             cpf='12345678901',
             email='henrique@bastos.net',
             phone='21-996186180',
+            paid=False
         )
         self.obj.save()
-    
+
     def test_create(self):
         self.assertTrue(Subscription.objects.exists())
 
@@ -22,4 +23,7 @@ class SubscriptionModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Henrique Bastos', str(self.obj))
-    
+
+    def test_paid_default_to_false(self):
+        """By default paid must be false"""
+        self.assertEqual(self.obj.paid, False)
