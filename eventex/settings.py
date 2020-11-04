@@ -31,7 +31,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)            # alterada
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())  # alterada
 
 # inserido:
-DEFAULT_FROM_EMAIL = 'fabriciobrasilemail@gmail.com' 
+DEFAULT_FROM_EMAIL = 'fabriciobrasilemail@gmail.com'
 
 # Application definition
 
@@ -78,14 +78,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'eventex.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-#adicionado abaixo
+# adicionado abaixo
 default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 
-#alterado abaixo
+# alterado abaixo
 DATABASES = {
     'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
 }

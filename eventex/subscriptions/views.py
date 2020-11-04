@@ -25,7 +25,11 @@ def create(request):
     if not form.is_valid():
         return render(request, 'subscriptions/subscription_form.html', {'form': form})
 
-    subscription = Subscription.objects.create(**form.cleaned_data)
+    # forma nova, usando o método .save() do ModelForm:
+    subscription = form.save()
+
+    # forma antiga para o salvamento anterior, sem ModelForm:
+    #subscription = Subscription.objects.create(**form.cleaned_data)
 
     _send_mail('Confirmação de inscrição',
                settings.DEFAULT_FROM_EMAIL,
