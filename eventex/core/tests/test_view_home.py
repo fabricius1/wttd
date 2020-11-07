@@ -5,6 +5,8 @@ from django.shortcuts import resolve_url as r
 # o TestCase é uma classe do Django que, por sua vez
 # já estende o TestCase do unittest
 class HomeTest(TestCase):
+    fixtures = ['keynotes.json']
+
     def setUp(self):
         "Access the route '/' with GET method and save it in a class response attribute"
         self.response = self.client.get(r('home'))
@@ -23,10 +25,14 @@ class HomeTest(TestCase):
 
     def test_speakers_names(self):
         """Must show keynote speakers names"""
-        contents = ['Grace Hopper',
-                    'http://hbn.link/hopper-pic',
-                    'Alan Turing',
-                    'http://hbn.link/turing-pic']
+        contents = ['href="{}"'.format(
+            r('speaker_detail', slug='grace-hopper')),
+            'Grace Hopper',
+            'http://hbn.link/hopper-pic',
+            'href="{}"'.format(
+            r('speaker_detail', slug='alan-turing')),
+            'Alan Turing',
+            'http://hbn.link/turing-pic']
         for content in contents:
             with self.subTest():
                 self.assertContains(self.response, content)
