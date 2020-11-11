@@ -3,6 +3,7 @@
 {% block content %}
 <section>
   <div class="talks content row padding-bottom-3 desktop-12 container">
+  
     <h2>Manhã</h2>
     {% for talk in morning_talks %}
       {% include 'talk_list_snippet.html' with talk=talk only %}
@@ -16,6 +17,12 @@
       {% empty %}
       <p>"Ainda não existem palestras de tarde"</p>       
     {% endfor %}
+
+    <h2>Mini-cursos</h2>
+    {% for course in courses %}
+      {% include 'talk_list_snippet.html' with talk=course only %}
+    {% endfor %}
+  
   </div>
 </section>
 {% endblock content %}
