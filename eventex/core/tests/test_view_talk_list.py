@@ -52,7 +52,7 @@ class TalkListGet(TestCase):
                 self.assertContains(self.response, expected, count)
 
     def test_context(self):
-        variables = ['morning_talks', 'afternoon_talks', 'courses']
+        variables = ['morning_talks', 'afternoon_talks']
         for key in variables:
             with self.subTest():
                 self.assertIn(key, self.response.context)
@@ -63,7 +63,8 @@ class TalkListGet(TestCase):
         for variable in variables:
             for item in self.response.context[variable]:
                 with self.subTest():
-                    self.assertIsInstance(item, Talk)
+                    self.assertTrue(isinstance(item, Talk) or
+                                    isinstance(item, Course))
 
 
 class TalkListGetEmpty(TestCase):

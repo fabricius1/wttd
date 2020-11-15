@@ -18,10 +18,10 @@
       <p>"Ainda não existem palestras de tarde"</p>       
     {% endfor %}
 
-    <h2>Mini-cursos</h2>
+    {% comment %} <h2>Mini-cursos</h2>
     {% for course in courses %}
       {% include 'talk_list_snippet.html' with talk=course only %}
-    {% endfor %}
+    {% endfor %} {% endcomment %}
   
   </div>
 </section>
